@@ -20,7 +20,7 @@ This project calculates the contribution of each character to the Marvel Cinemat
 
 ### Further work to be done
 - Visualisation of the data in some graphical format using matplotlib or bokeh.
-- Understanding the resulst clearly (I'm really interested in what these values really mean)
+- Understanding the results clearly (I'm really interested in what these values really mean)
 - Maybe a written analysis of the results as a blog post (hopefully)
 
 Data for the analysis obtained from [IMDB](https://www.imdb.com/list/ls066620113/?sort=list_order,asc&st_dt=&mode=detail&page=1&ref_=ttls_vm_dtl) created by [ninewheels0](https://www.imdb.com/user/ur51880615/?ref_=_usr)
