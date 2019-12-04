@@ -8,7 +8,7 @@ import re
 
 def fetch_data(url):
 	"""Fetching data for each movie as in the IMDB link provided"""
-	# Fetch HTML content from webpage
+	# Fetch HTML content from web page
 	page_source = requests.get(url)
 	# Provide HTML content to Beautiful Soup
 	soup = BeautifulSoup(page_source.content, 'lxml')
@@ -44,7 +44,7 @@ def clean_data(dict):
 	character_movie_time = {}
 	# Parsing through data scraped for each movie
 	for movie in dict.keys():
-		# Parsing through each charactering in the movie
+		# Parsing through each character in in the movie
 		for item in dict[movie]:
 			character = item.split('<')[0].strip()
 			time = item.split('<')[1].split('>')[0].strip()
@@ -58,12 +58,12 @@ def clean_data(dict):
 
 
 def combine_rows(matrix):
-	"""Method that combines the duplicate rows that arised due to replacing character IDs"""
+	"""Method that combines the duplicate rows that arose due to replacing character IDs"""
 	# List of characters
 	characters = list(set([character for character in matrix.index]))
 	# Iterating over every character
 	for character in characters:
-		# Creating a mini dataframe for each character
+		# Creating a mini data frame for each character
 		df = matrix.loc[character]
 		# If the character row is present just once, iterating over every column would be iterating over every movie
 		if len(list(df.index)) != 23:
@@ -92,13 +92,13 @@ def remove_characters(data):
 	char_id_index = pd.read_csv('.\\characters.csv')
 	# Creating aa dict containing character IDs for each character
 	names = {old:new for (old, new) in zip(char_id_index['Character Name'], char_id_index['Character ID'])}
-	# Conerting the data dict into a pandas dataframe for easy handling
+	# Converting the data dict into a pandas data frame for easy handling
 	char_movie_matrix = pd.DataFrame(data)
 	# Renaming characters with their character IDs
 	char_movie_matrix.rename(index=names, inplace=True)
 	# Creating a list of unimportant characters to be removed
 	pop_list = [name for name in char_movie_matrix.index if name not in list(char_id_index['Character ID'])]
-	# Removing all unimportant characters from the dataframe
+	# Removing all unimportant characters from the data frame
 	char_movie_matrix = char_movie_matrix.drop(pop_list)
 	# Combine rows with same index
 	char_movie_matrix = combine_rows(char_movie_matrix)
@@ -118,7 +118,7 @@ def calculate_idf(matrix):
 	# List of all the movies
 	movies = [movie for movie in matrix.columns]
 	# N = Total number of movies
-	N  = len(movies)
+	N = len(movies)
 	# Iterating over every character
 	for character in characters:
 		# Finding the document frequency for each character
@@ -162,7 +162,7 @@ def convert_time_to_mins(matrix):
 
 def calculate_tf(matrix, movie_lengths):
 	"""Method that calculates TF values for each character over each movie"""
-	# Copy the input char_movie_floattime matrix, as output TF matrix would be in the same format
+	# Copy the input char_movie_float_time matrix, as output TF matrix would be in the same format
 	tf = matrix.copy()
 	for character in tf.index:
 		for movie in tf.columns:
@@ -183,7 +183,7 @@ def calculate_tf_idf(tf, idf):
 
 
 def calculate_mean_tf_idf(tf_idf):
-	"""Method that calculates the mean TF-IDF values over the entire Marvel Cinameatic Universe for all characters"""
+	"""Method that calculates the mean TF-IDF values over the entire Marvel Cinematic Universe for all characters"""
 	tf_idf_mean = dict()
 	# N = Number of movies
 	N = len([tf_idf.index])
@@ -208,6 +208,7 @@ def generate_sheets(time_matrix, tf_idf_character, tf_idf_mcu):
 	time_matrix.to_csv('character_screen_time_every_movie.csv')
 	tf_idf_character.to_csv('character_tf_idf_every_movie.csv')
 	tf_idf_mcu.to_csv('character_tf_idf_mcu_contribution.csv')
+
 
 if __name__ == '__main__':
 	# Input IMDB url containing the data
